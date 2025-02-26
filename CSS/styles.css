@@ -1,32 +1,71 @@
+/* ../CSS/styles.css */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-}
-
-header {
-    background: #ff5722;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 24px;
 }
 
 .container {
     width: 80%;
+    max-width: 600px;
     margin: 20px auto;
     background: white;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.checkbox-group {
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.add-template-btn {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff6b6b;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.templates-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
 }
 
-.checkbox-group label {
-    display: block;
-    margin-bottom: 10px;
+.templates-header h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.template-text {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.templates-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.template-box {
+    width: 45%;
+    margin: 10px;
+    padding: 20px;
+    background-color: #ffcc5c;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
