@@ -1,3 +1,4 @@
+/* ../CSS/styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -30,6 +31,10 @@ h1 {
     color: white;
     cursor: pointer;
     margin-top: 10px;
+}
+
+.add-template-btn:hover {
+    background-color: #ff4d4d;
 }
 
 .templates-header {
@@ -67,4 +72,8 @@ h1 {
     text-align: center;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.template-box:hover {
+    background-color: #ffaa00;
 }
