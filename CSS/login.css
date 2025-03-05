@@ -1,26 +1,32 @@
+/* General Page Styling */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     margin: 0;
-    padding: 0;
 }
 
+/* Login Box Styling */
 .login-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 20px;
+    width: 350px;
+    padding: 25px;
     background: white;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
     text-align: center;
 }
 
+/* Title */
 .login-container h1 {
-    font-size: 24px;
+    font-size: 26px;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
+/* Input Box Styling */
 .input-group {
     margin-bottom: 15px;
     text-align: left;
@@ -34,23 +40,38 @@ body {
 
 .input-group input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
-.login-btn {
+/* Input Focus Effect */
+.input-group input:focus {
+    border-color: #ff6b6b;
+}
+
+/* Login Button */
+.form-login-btn {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
+    font-weight: bold;
     border: none;
-    border-radius: 5px;
-    background-color: #ff6b6b;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ff6b6b, #ff4d4d);
     color: white;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.login-btn:hover {
-    background-color: #ff4d4d;
+/* Button Hover Effect */
+.form-login-btn:hover {
+    background: linear-gradient(135deg, #ff4d4d, #ff1e1e);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
 }
