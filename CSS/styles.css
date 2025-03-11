@@ -1,4 +1,3 @@
-/* ../CSS/styles.css */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -8,23 +7,23 @@ body {
 }
 
 .container {
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 600px;
+    width: 100%; /* Use percentage-based width */
+    max-width: 600px; /* Limit maximum width */
+    margin: 20px auto;
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 
-
 h1 {
-    font-size: 28px;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add "..." if it overflows */
+    font-size: 24px;
     margin-bottom: 20px;
 }
 
@@ -64,13 +63,19 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: flex-start;
+    gap: 10px; /* Maintain spacing between boxes */
     margin-top: 10px;
+    overflow-y: auto;
+    max-height: 400px;
 }
 
+/* Template Box Styling */
 .template-box {
-    width: 45%;
-    margin: 10px;
-    padding: 20px;
+    width: 80%; /* Keep consistent width for boxes */
+    max-width: 400px; /* Prevent boxes from expanding too wide */
+    margin: 0 auto; /* Center inside container */
+    padding: 15px;
     background-color: #ffcc5c;
     font-size: 18px;
     font-weight: bold;
@@ -78,11 +83,13 @@ h1 {
     text-align: center;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 .template-box:hover {
     background-color: #ffaa00;
 }
+
 
 
 /* Remove background box and fix positioning */
@@ -109,4 +116,36 @@ h1 {
     background: linear-gradient(135deg, #ff4d4d, #ff1e1e);
     box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.3);
     transform: scale(1.05);
+}
+
+
+.add-exercise-btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.add-exercise-btn:hover {
+    background-color: #45a049;
+}
+
+.exercise-box {
+    padding: 12px;
+    margin: 8px 0;
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+}
+
+.exercise-box:hover {
+    background-color: #d6d6d6;
 }
