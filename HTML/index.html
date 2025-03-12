@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="../CSS/login.css">
 </head>
 <body>
-    <a href="login.html" class="home-login-btn">Login</a>
+    <!-- Logout Button -->
+    <button class="home-login-btn" onclick="logout()">Logout</button>
 
     <div class="container">
         <h1>Start Workout</h1>
@@ -23,10 +24,16 @@
         <div class="templates-container" id="templates-container">
             <!-- User-added templates will go here -->
         </div>
-
+        
     </div>
 
     <script src="../JS/script.js"></script>
 
+    <script>
+        function logout() {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        }
+    </script>
 </body>
 </html>
