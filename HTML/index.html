@@ -31,9 +31,18 @@
 
     <script>
         function logout() {
-            localStorage.removeItem("currentUser");
-            window.location.href = "login.html";
+          // Retrieve the current username from localStorage
+          const username = localStorage.getItem("currentUser");
+          if (username) {
+            // Remove user-specific data (templates, etc.)
+            localStorage.removeItem(username);
+          }
+          // Remove the currentUser key to log out
+          localStorage.removeItem("currentUser");
+          // Redirect to the login page
+          window.location.href = "login.html";
         }
-    </script>
+      </script>
+      
 </body>
 </html>

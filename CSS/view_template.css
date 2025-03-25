@@ -1,0 +1,111 @@
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .close-btn,
+  .edit-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .exercises-list {
+    margin-top: 10px;
+  }
+  
+  /* Each exercise container */
+  .exercise-item {
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #f7f7f7;
+    border-radius: 6px;
+  }
+  
+  /* Header row with exercise name + add set button */
+  .exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .add-set-btn {
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  /* Table styling */
+  .sets-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .sets-table th,
+  .sets-table td {
+    padding: 8px 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* "Start Workout" button at bottom */
+  .start-workout-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .start-workout-btn:hover {
+    background-color: #45a049;
+  }
+
+  .exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .sets-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    background-color: #fff;
+  }
+  
+  .sets-table th,
+  .sets-table td {
+    padding: 8px 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .add-set-inline-btn {
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .add-set-inline-btn:hover {
+    background-color: #ff4d4d;
+  }
+  

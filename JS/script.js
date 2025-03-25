@@ -31,3 +31,59 @@ function addTemplate() {
         templateContainer.appendChild(newTemplate);
     }
 }
+document.addEventListener("DOMContentLoaded", () => {
+    loadTemplates();
+});
+
+function loadTemplates() {
+    const username = localStorage.getItem("currentUser");
+    if (!username) return;
+
+    const userData = JSON.parse(localStorage.getItem(username));
+    if (userData && userData.templates) {
+        let templateContainer = document.getElementById("templates-container");
+        templateContainer.innerHTML = "";
+
+        userData.templates.forEach(template => {
+            let newTemplate = document.createElement("button");
+            newTemplate.classList.add("template-box");
+            newTemplate.textContent = template.name;
+
+            newTemplate.addEventListener("click", () => {
+                window.location.href = `template.html?template=${encodeURIComponent(template.name)}`;
+            });
+
+            templateContainer.appendChild(newTemplate);
+        });
+    }
+}
+
+function addTemplate() {
+    window.location.href = 'template.html';
+}
+
+// Example snippet in script.js or wherever you load templates:
+function loadTemplates() {
+    const username = localStorage.getItem("currentUser");
+    if (!username) return;
+  
+    const userData = JSON.parse(localStorage.getItem(username));
+    if (userData && userData.templates) {
+      let templateContainer = document.getElementById("templates-container");
+      templateContainer.innerHTML = "";
+  
+      userData.templates.forEach(template => {
+        let newTemplate = document.createElement("button");
+        newTemplate.classList.add("template-box");
+        newTemplate.textContent = template.name;
+  
+        // Go to the new "view_template.html" page
+        newTemplate.addEventListener("click", () => {
+          window.location.href = `view_template.html?template=${encodeURIComponent(template.name)}`;
+        });
+  
+        templateContainer.appendChild(newTemplate);
+      });
+    }
+  }
+  

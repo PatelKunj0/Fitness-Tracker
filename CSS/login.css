@@ -38,8 +38,9 @@ body {
     margin-bottom: 5px;
 }
 
+/* For the username and password text box */
 .input-group input {
-    width: 100%;
+    width: 95%;
     padding: 12px;
     border: 2px solid #ddd;
     border-radius: 8px;

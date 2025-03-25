@@ -79,10 +79,10 @@ h1 {
     background-color: #ffcc5c;
     font-size: 18px;
     font-weight: bold;
-    border-radius: 10px;
+    border-radius: 20px;
     text-align: center;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(149, 140, 140, 0.2);
     transition: all 0.3s ease;
 }
 

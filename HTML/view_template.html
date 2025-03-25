@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Template</title>
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="../CSS/styles.css" />
+  <!-- View Template Specific Styles -->
+  <link rel="stylesheet" href="../CSS/view_template.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <!-- "X" button to go back to homepage -->
+      <button class="close-btn" onclick="goBack()">✖️</button>
+      <!-- Template name -->
+      <h1 id="template-title"></h1>
+      <!-- Edit button to open old "template.html" for editing -->
+      <button class="edit-btn" onclick="editTemplate()">Edit</button>
+    </div>
+
+    <!-- Last Performed Info -->
+    <p>Last Performed: <span id="last-performed">N/A</span></p>
+
+    <!-- Exercises List (with sets) -->
+    <div id="exercises-list" class="exercises-list">
+      <!-- Exercises (and their sets) will be populated here by JS -->
+    </div>
+
+    <!-- Start Workout Button -->
+    <button class="start-workout-btn" onclick="startWorkout()">Start Workout</button>
+  </div>
+
+  <!-- View Template Script -->
+  <script src="../JS/view_template.js"></script>
+</body>
+</html>

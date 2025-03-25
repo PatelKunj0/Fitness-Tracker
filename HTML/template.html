@@ -1,22 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Template</title>
-    <link rel="stylesheet" href="../CSS/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New Template</title>
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="../CSS/styles.css" />
+
+  <!-- Template-Specific Styles -->
+  <link rel="stylesheet" href="../CSS/template.css" />
 </head>
 <body>
 
-    <div class="container">
-        <h1 id="template-title">Template Name</h1>
-        <button class="add-exercise-btn" onclick="addExercise()">Add Exercise</button>
+  <div class="container">
 
-        <div id="exercise-container" class="exercise-container">
-            <!-- Added exercises will appear here -->
-        </div>
+    <!-- Top Bar (Back Button, Title, Save Button) -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      
+      <!-- "X" back button -->
+      <button onclick="goBack()" style="border: none; background: none; font-size: 24px; cursor: pointer;">✖️</button>
+      <h1>New Template</h1>
+      <!-- Save Button -->
+      <button
+        onclick="saveTemplate()"
+        id="save-btn"
+        style="background-color: #ff6b6b; color: #fefefe; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;"
+      >
+        Save
+      </button>
     </div>
 
-    <script src="../JS/template.js"></script>
+    <!-- Template Name Input -->
+    <div>
+      <input
+        type="text"
+        id="template-name"
+        placeholder="Template Name"
+        style="
+          width: 95%;
+          padding: 12px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          margin-bottom: 10px;
+        "
+      />
+    </div>
+
+    <!-- Add Exercises Button -->
+    <button class="add-exercise-btn" onclick="addExercise()">Add Exercises</button>
+
+    <!-- Exercise Container -->
+    <div id="exercise-container" class="exercise-container">
+      <!-- Dynamically added exercises will appear here -->
+    </div>
+
+    <!-- Exercise Selection Popup -->
+    <div id="exercise-popup" class="popup-container" style="display: none;">
+      <div class="popup">
+        <div class="popup-header">
+          <span class="close-btn" onclick="closePopup()">✖️</span>
+          <h2>Select Exercise</h2>
+        </div>
+        <input type="text" id="search-exercise" placeholder="Search exercises..." oninput="filterExercises()" />
+        <div class="exercise-list" id="exercise-list">
+          <!-- Exercises will be populated here by populateExerciseList() -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use type="module" so we can import exercises from exercises.js in template.js -->
+  <script type="module" src="../JS/template.js"></script>
 </body>
 </html>
