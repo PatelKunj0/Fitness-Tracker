@@ -1,27 +1,40 @@
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("login-form").addEventListener("submit", function(event) {
-        event.preventDefault();
+document.getElementById("signup-form").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+    const username = document.getElementById("new-username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("new-password").value;
 
-        // Check if user exists
-        let userData = localStorage.getItem(username);
-        if (!userData) {
-            alert("User does not exist. Please sign up.");
-            return;
-        }
+    // Email validation
+    const allowedDomains = ["gmail.com", "outlook.com", "yahoo.com", "icloud.com", "hotmail.com"];
+    const emailParts = email.split("@");
+    
+    // Check 1: Basic format validation
+    if (emailParts.length !== 2 || !emailParts[1].includes(".")) {
+        alert("Please enter a valid email address (e.g., user@gmail.com)");
+        return;
+    }
 
-        userData = JSON.parse(userData);
-        if (userData.password !== password) {
-            alert("Incorrect password. Please try again.");
-            return;
-        }
+    // Check 2: Domain validation
+    const domain = emailParts[1].toLowerCase();
+    if (!allowedDomains.includes(domain)) {
+        alert("We only accept emails from: Gmail, Outlook, Yahoo, iCloud, or Hotmail");
+        return;
+    }
 
-        // Save logged in user to localStorage
-        localStorage.setItem("currentUser", username);
+    // Check if user exists
+    if (localStorage.getItem(username)) {
+        alert("Username already exists. Please choose another.");
+        return;
+    }
 
-        alert("Login successful!");
-        window.location.href = "index.html"; 
-    });
+    // Save user data (Note: In production, hash the password!)
+    localStorage.setItem(username, JSON.stringify({
+        username: username,
+        email: email,
+        password: password // Replace with hashed password later
+    }));
+
+    alert("Account created successfully!");
+    window.location.href = "login.html";
 });
