@@ -108,4 +108,25 @@
   .add-set-inline-btn:hover {
     background-color: #ff4d4d;
   }
-  
+
+.checkmark-btn {
+  border: 1px solid #000;
+  border-radius: 5px;
+  background: white;
+  font-size: 15px;
+  cursor: pointer;
+  color: #888; /* Default color */
+}
+
+.checkmark-btn.completed {
+  background: #4caf50;
+  border-color: #000000;
+  color: #000000; /* Changes to green when completed */
+}
+
+#timer {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 5px 0 10px;
+}

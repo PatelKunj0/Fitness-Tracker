@@ -15,10 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let template = userData.templates.find(t => t.name === templateName);
 
         if (template && template.exercises && template.exercises.length > 0) {
-            template.exercises.forEach(exercise => {
-                addExerciseToTemplate(exercise);
-            });
+            renderExercises();
         }
+        
     }
 });
 
@@ -99,24 +98,30 @@ function addExerciseToTemplate(exerciseName) {
     // Make sure renderExercises() is defined to update the display.
     renderExercises();
   }
-function renderExercises() {
+  function renderExercises() {
     const container = document.getElementById("exercise-container");
-    // Retrieve current template name and user data
+    container.innerHTML = ""; // Clear previous content
+    
+    // Retrieve the current template name and user data
     const templateName = document.getElementById("template-name").value.trim();
     const username = localStorage.getItem("currentUser");
     let userData = JSON.parse(localStorage.getItem(username)) || { templates: [] };
     let template = userData.templates.find(t => t.name === templateName);
     
-    container.innerHTML = "";
     if (template && template.exercises) {
-        template.exercises.forEach(ex => {
-        const div = document.createElement("div");
-        div.classList.add("exercise-box");
-        div.textContent = ex.name;
-        container.appendChild(div);
-        });
+      template.exercises.forEach(exercise => {
+        // Create a div for each exercise
+        let exerciseDiv = document.createElement("div");
+        exerciseDiv.classList.add("exercise-box");
+        
+        // Check if exercise is an object and use its name, otherwise use it directly
+        exerciseDiv.textContent = typeof exercise === "object" ? exercise.name : exercise;
+        
+        container.appendChild(exerciseDiv);
+      });
+    }
   }
-}
+  
 
 
 function saveTemplate() {

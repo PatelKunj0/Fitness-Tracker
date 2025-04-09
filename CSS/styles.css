@@ -59,37 +59,69 @@ h1 {
     margin-top: 10px;
 }
 
+/* Container holding all the template cards */
 .templates-container {
-    display: flex;
+    display: flex;               /* or grid if you prefer */
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 10px; /* Maintain spacing between boxes */
-    margin-top: 10px;
-    overflow-y: auto;
-    max-height: 400px;
-}
-
-/* Template Box Styling */
-.template-box {
-    width: 80%; /* Keep consistent width for boxes */
-    max-width: 400px; /* Prevent boxes from expanding too wide */
-    margin: 0 auto; /* Center inside container */
-    padding: 15px;
-    background-color: #ffcc5c;
+    justify-content: center;     /* center them horizontally */
+    gap: 16px;                   /* space between cards */
+    padding: 20px;
+  }
+  
+  /* Individual template card */
+  .template-box {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    width: 280px;                /* adjust to your preference */
+    padding: 16px;
+    text-align: left;            /* left-align text inside the card */
+    position: relative;          /* so we can place the "..." button top-right */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* Hover effect */
+  .template-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  /* Title for the template card */
+  .template-box h3 {
+    margin: 0 0 8px;             /* some bottom spacing */
+    font-size: 20px;
+    color: #333; 
+  }
+  
+  /* A short preview of exercises inside */
+  .template-exercises {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.4;
+  }
+  
+  /* Metadata like "9 days ago" or "3 hours ago" */
+  .template-meta {
+    font-size: 12px;
+    color: #999;
+    margin: 0; 
+  }
+  
+  /* The "more options" button or ellipsis in the top-right corner */
+  .more-options-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
     font-size: 18px;
-    font-weight: bold;
-    border-radius: 20px;
-    text-align: center;
     cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(149, 140, 140, 0.2);
-    transition: all 0.3s ease;
-}
-
-.template-box:hover {
-    background-color: #ffaa00;
-}
-
+  }
+  .more-options-btn:hover {
+    opacity: 0.8;
+  }
+  
 
 
 /* Remove background box and fix positioning */
