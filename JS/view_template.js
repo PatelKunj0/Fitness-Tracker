@@ -315,6 +315,312 @@ function calculateDaysAgo(oldDate, newDate) {
   return Math.floor((newDate - oldDate) / oneDayMs);
 }
 
+/**
+ * Calculate exercise stats for the current template.
+ * Returns an object with totalSets, totalReps, averageWeight, completionRate.
+ */
+function calculateStats() {
+  if (!currentTemplate || !currentTemplate.exercises) {
+    return null;
+  }
+
+  let totalSets = 0;
+  let totalReps = 0;
+  let totalWeight = 0;
+  let completedSets = 0;
+
+  currentTemplate.exercises.forEach(exercise => {
+    if (exercise.sets && exercise.sets.length > 0) {
+      exercise.sets.forEach(set => {
+        totalSets++;
+        totalReps += Number(set.reps) || 0;
+        totalWeight += Number(set.weight) || 0;
+        if (set.completed) {
+          completedSets++;
+        }
+      });
+    }
+  });
+
+  const averageWeight = totalSets > 0 ? (totalWeight / totalSets).toFixed(2) : 0;
+  const completionRate = totalSets > 0 ? ((completedSets / totalSets) * 100).toFixed(1) : 0;
+
+  return {
+    totalSets,
+    totalReps,
+    averageWeight,
+    completionRate
+  };
+}
+
+/**
+ * Render the exercise stats in the #exercise-stats div.
+ */
+function renderStats() {
+  const stats = calculateStats();
+  const statsDiv = document.getElementById("exercise-stats");
+  if (!statsDiv) return;
+
+  if (!stats || stats.totalSets === 0) {
+    statsDiv.innerHTML = "<p>No exercise data available yet.</p>";
+    return;
+  }
+
+  statsDiv.innerHTML = `
+    <h2>Exercise Stats</h2>
+    <p>Total Sets: ${stats.totalSets}</p>
+    <p>Total Reps: ${stats.totalReps}</p>
+    <p>Average Weight: ${stats.averageWeight} lbs</p>
+    <p>Completion Rate: ${stats.completionRate}%</p>
+  `;
+}
+
+// Modify renderExercises to call renderStats after rendering
+function renderExercises() {
+  const exercisesList = document.getElementById("exercises-list");
+  exercisesList.innerHTML = "";
+
+  if (!currentTemplate.exercises || currentTemplate.exercises.length === 0) {
+    exercisesList.textContent = "No exercises yet.";
+    renderStats();
+    return;
+  }
+
+  currentTemplate.exercises.forEach((exerciseObj, exerciseIndex) => {
+    // Container for each exercise
+    const exerciseDiv = document.createElement("div");
+    exerciseDiv.classList.add("exercise-item");
+
+    // Header with exercise name
+    const exerciseHeader = document.createElement("div");
+    exerciseHeader.classList.add("exercise-header");
+    exerciseHeader.innerHTML = `<h3>${exerciseObj.name}</h3>`;
+    exerciseDiv.appendChild(exerciseHeader);
+
+    // Table for sets
+    const table = document.createElement("table");
+    table.classList.add("sets-table");
+
+    // Table header row with additional "Done?" column
+    const thead = document.createElement("thead");
+    thead.innerHTML = `
+      <tr>
+        <th>Set</th>
+        <th>lbs</th>
+        <th>Reps</th>
+        <th>Done?</th>
+      </tr>
+    `;
+    table.appendChild(thead);
+
+    // Table body
+    const tbody = document.createElement("tbody");
+
+    // Render existing sets if available
+    if (!exerciseObj.sets || exerciseObj.sets.length === 0) {
+      const noSetRow = document.createElement("tr");
+      noSetRow.innerHTML = `<td colspan="4">No sets yet.</td>`;
+      tbody.appendChild(noSetRow);
+    } else {
+      exerciseObj.sets.forEach((setObj, setIndex) => {
+        // Ensure completed property exists
+        if (typeof setObj.completed === "undefined") {
+          setObj.completed = false;
+        }
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${setIndex + 1}</td>
+          <td>${setObj.weight}</td>
+          <td>${setObj.reps}</td>
+          <td></td>
+        `;
+        // Create the check mark button inside the last cell
+        const checkCell = row.querySelector("td:last-child");
+        const checkBtn = document.createElement("button");
+        checkBtn.classList.add("checkmark-btn");
+        checkBtn.textContent = "✓";
+
+        // Apply completed styling if already marked
+        if (setObj.completed) {
+          checkBtn.classList.add("completed");
+        }
+
+        // Only allow toggling if the workout is active
+        checkBtn.addEventListener("click", () => {
+          if (!workoutActive) {
+            alert("Please press 'Start Workout' first.");
+            return;
+          }
+          // Toggle completion status
+          setObj.completed = !setObj.completed;
+          if (setObj.completed) {
+            checkBtn.classList.add("completed");
+          } else {
+            checkBtn.classList.remove("completed");
+          }
+          saveTemplate();
+          renderStats();
+        });
+        checkCell.appendChild(checkBtn);
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // --- Inline "Add Set" Row at the Bottom ---
+    const addSetRow = document.createElement("tr");
+    addSetRow.innerHTML = `
+      <td></td>
+      <td><input type="number" class="weight-input" placeholder="lbs" style="width: 60px;" /></td>
+      <td style="display: flex; align-items: center; gap: 5px;">
+        <input type="number" class="reps-input" placeholder="reps" style="width: 60px;" />
+        <button class="add-set-inline-btn">Add</button>
+      </td>
+      <td></td>
+    `;
+    // Add click listener to the "Add" button
+    const addBtn = addSetRow.querySelector(".add-set-inline-btn");
+    addBtn.addEventListener("click", () => {
+      const weightInput = addSetRow.querySelector(".weight-input");
+      const repsInput = addSetRow.querySelector(".reps-input");
+
+      const weightVal = weightInput.value.trim();
+      const repsVal = repsInput.value.trim();
+
+      if (!weightVal || !repsVal) {
+        alert("Please enter both weight and reps.");
+        return;
+      }
+
+      if (!exerciseObj.sets) {
+        exerciseObj.sets = [];
+      }
+      // Add new set with a default completed state of false.
+      exerciseObj.sets.push({ weight: weightVal, reps: repsVal, completed: false });
+
+      // Clear input fields
+      weightInput.value = "";
+      repsInput.value = "";
+
+      // Save updated data and re-render the exercises
+      saveTemplate();
+      renderExercises();
+      renderStats();
+    });
+    tbody.appendChild(addSetRow);
+
+    table.appendChild(tbody);
+    exerciseDiv.appendChild(table);
+
+    // Finally, add the entire exercise container to the main list
+    exercisesList.appendChild(exerciseDiv);
+  });
+
+  renderStats();
+}
+
+/**
+ * Save user data to localStorage (including any new sets).
+ */
+function saveTemplate() {
+  localStorage.setItem(username, JSON.stringify(userData));
+}
+
+/**
+ * "X" button -> go back to homepage
+ */
+function goBack() {
+  window.location.href = "index.html";
+}
+
+/**
+ * "Edit" button -> go to template.html
+ */
+function editTemplate() {
+  const params = new URLSearchParams(window.location.search);
+  const templateName = params.get("template");
+  window.location.href = `template.html?template=${encodeURIComponent(templateName)}`;
+}
+
+/**
+ * "Start Workout" -> mark lastPerformed as now and enable check marks to be clickable.
+ */
+function startTimer() {
+  workoutStartTime = Date.now();
+  const timerElement = document.getElementById("timer");
+  timerElement.style.display = "block"; // Show the timer
+  timerInterval = setInterval(() => {
+    const elapsed = Date.now() - workoutStartTime;
+    const minutes = Math.floor(elapsed / 60000);
+    const seconds = Math.floor((elapsed % 60000) / 1000);
+    const formattedTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    timerElement.textContent = formattedTime;
+  }, 1000);
+}
+
+function startWorkout() {
+  currentTemplate.lastPerformed = new Date().toISOString();
+  saveTemplate();
+  workoutActive = true; // Enable any other workout logic
+  const editBtn = document.querySelector(".edit-btn");
+  if (editBtn) {
+    editBtn.style.visibility = "hidden";
+  }
+  startTimer(); // Starts and shows the timer
+  alert("Workout started! You can now mark your sets.");
+
+  // Hide the Start Workout button
+  const startBtn = document.querySelector('.start-workout-btn');
+  if (startBtn) {
+    startBtn.style.display = "none";
+  }
+  // Create a Cancel Workout button
+  const cancelBtn = document.createElement('button');
+  cancelBtn.classList.add('cancel-workout-btn');
+  cancelBtn.textContent = "Cancel Workout";
+  // Style the cancel button (you can adjust these inline styles or move them to CSS)
+  cancelBtn.style.backgroundColor = "#f44336"; // red color
+  cancelBtn.style.color = "white";
+  cancelBtn.style.border = "none";
+  cancelBtn.style.padding = "10px 20px";
+  cancelBtn.style.borderRadius = "20px";
+  cancelBtn.style.cursor = "pointer";
+  cancelBtn.style.fontWeight = "bold";
+  cancelBtn.style.marginTop = "20px";
+  // Assign its onclick handler
+  cancelBtn.onclick = cancelWorkout;
+  
+  // Append the cancel button to the container (or wherever appropriate)
+  const container = document.querySelector('.container');
+  container.appendChild(cancelBtn);
+
+  renderExercises();
+}
+
+function cancelWorkout() {
+  // Show a confirmation pop-up
+  if (confirm("Are you sure you want to cancel the workout?")) {
+    // If confirmed, disable workout logic and stop the timer
+    workoutActive = false;
+    clearInterval(timerInterval);
+  
+    // Optionally hide the timer element
+    const timerElement = document.getElementById("timer");
+    if (timerElement) {
+      timerElement.style.display = "none";
+    }
+  
+    // Redirect to the homepage
+    window.location.href = "index.html";
+  }
+  // If the user clicks Cancel in the pop-up, do nothing.
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
 // Expose functions if you're using inline onclick in HTML
 window.goBack = goBack;
 window.editTemplate = editTemplate;

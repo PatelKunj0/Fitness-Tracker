@@ -130,3 +130,13 @@
   color: #333;
   margin: 5px 0 10px;
 }
+
+.stats-container {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f7f7f7;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}

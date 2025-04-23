@@ -133,7 +133,11 @@ function saveTemplate() {
 
     // Gather all the exercises added to the template
     const exercisesElements = document.querySelectorAll('.exercise-box');
-    const selectedExercises = Array.from(exercisesElements).map(box => box.textContent);
+    // Save exercises as objects with name and empty sets array for compatibility
+    const selectedExercises = Array.from(exercisesElements).map(box => ({
+        name: box.textContent,
+        sets: []
+    }));
 
     const username = localStorage.getItem("currentUser");
     if (!username) {

@@ -33,6 +33,15 @@ function addTemplate() {
 }
 document.addEventListener("DOMContentLoaded", () => {
     loadTemplates();
+
+    // Add event listener for See Stats button
+    const seeStatsBtn = document.getElementById("see-stats-btn");
+    if (seeStatsBtn) {
+        seeStatsBtn.addEventListener("click", () => {
+            // Navigate to the stats page (view_template.html assumed)
+            window.location.href = "view_template.html";
+        });
+    }
 });
 
 function loadTemplates() {
@@ -99,7 +108,6 @@ function loadTemplates() {
     return Math.floor((newDate - oldDate) / oneDayMs);
   }
   
-
 function addTemplate() {
     window.location.href = 'template.html';
 }
