@@ -6,6 +6,13 @@ body {
     padding: 0;
 }
 
+body.welcome-page {
+    background-image: url('../images/Background.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .container {
     width: 100%; /* Use percentage-based width */
     max-width: 600px; /* Limit maximum width */
