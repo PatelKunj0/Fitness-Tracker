@@ -76,13 +76,14 @@
     text-align: center;
     padding: 8px;
   }
-/* Make the +lbs and reps inputs taller */
+  
+/* Making the +lbs and reps inputs taller */
 .sets-table input {
-    width: 60px;         /* your existing width */
-    height: 2.5em;       /* increase this to taste (e.g. 2.5em ≈ 40px) */
-    padding: 0.25em;     /* ensures text isn’t cramped */
-    font-size: 1em;      /* adjust if you want larger text too */
-    text-align: center;  /* keep it centered */
+    width: 60px; 
+    height: 2.5em;   
+    padding: 0.25em;     
+    font-size: 1em;      
+    text-align: center;  
     box-sizing: border-box;
   }
   
