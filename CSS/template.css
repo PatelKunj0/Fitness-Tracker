@@ -65,3 +65,25 @@
 .exercise-item:hover {
     background-color: #f4f4f4;
 }
+
+/* center all cells & inputs in the sets-table */
+.sets-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .sets-table th,
+  .sets-table td {
+    text-align: center;
+    padding: 8px;
+  }
+/* Make the +lbs and reps inputs taller */
+.sets-table input {
+    width: 60px;         /* your existing width */
+    height: 2.5em;       /* increase this to taste (e.g. 2.5em ≈ 40px) */
+    padding: 0.25em;     /* ensures text isn’t cramped */
+    font-size: 1em;      /* adjust if you want larger text too */
+    text-align: center;  /* keep it centered */
+    box-sizing: border-box;
+  }
+  
+  

@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import csv, os
-from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__, static_folder="HTML", static_url_path="")
 CORS(app)
@@ -34,8 +33,7 @@ def signup():
     if user_exists(username):
         return jsonify({"error":"User already exists"}), 400
 
-    hashed = generate_password_hash(password)
-    write_user(username, hashed)
+    write_user(username, password)
     return jsonify({"message":"User created successfully"}), 201
 
 @app.route("/login", methods=["POST"])
@@ -52,7 +50,7 @@ def login():
     with open(CSV_FILE, newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            if row["username"] == username and check_password_hash(row["password"], password):
+            if row["username"] == username and row["password"] == password:
                 return jsonify({"message":"Login OK"}), 200
 
     return jsonify({"error":"Invalid credentials"}), 401

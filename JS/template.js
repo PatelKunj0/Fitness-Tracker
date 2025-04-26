@@ -1,25 +1,19 @@
 import exercises from './exercises.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Check if there's a template passed via URL (for editing an existing template)
     const params = new URLSearchParams(window.location.search);
     const templateName = params.get("template");
     const username = localStorage.getItem("currentUser");
-
+  
+    // if editing, prefill the name
     if (templateName && username) {
-        // Populate the template name input
-        document.getElementById("template-name").value = templateName;
-
-        // Retrieve user data and load existing exercises for this template (if any)
-        let userData = JSON.parse(localStorage.getItem(username));
-        let template = userData.templates.find(t => t.name === templateName);
-
-        if (template && template.exercises && template.exercises.length > 0) {
-            renderExercises();
-        }
-        
+      document.getElementById("template-name").value = templateName;
     }
-});
+  
+    // always render whatever exercises exist (including your new setsCount/repsPerSet fields)
+    renderExercises();
+  });
+  
 
 function goBack() {
     window.location.href = 'index.html';
@@ -64,80 +58,112 @@ function filterExercises() {
             : 'none';
     });
 }
+
 function addExerciseToTemplate(exerciseName) {
-    // Retrieve the current template name from the input field.
-    const templateName = document.getElementById("template-name").value.trim();
-    if (!templateName) {
-      alert("Template name is missing.");
-      return;
-    }
-    
-    // Retrieve username and user data from localStorage
     const username = localStorage.getItem("currentUser");
+    if (!username) { alert("Log in first."); return; }
     let userData = JSON.parse(localStorage.getItem(username)) || { templates: [] };
-    
-    // Try to find an existing template with this name
+    let templateName = document.getElementById("template-name").value.trim();
+    if (!templateName) { alert("Name your template first."); return; }
     let template = userData.templates.find(t => t.name === templateName);
-    
-    // If not found, create a new template object and add it to userData
     if (!template) {
       template = { name: templateName, exercises: [] };
       userData.templates.push(template);
     }
-    
-    // Push the new exercise object (with an empty sets array)
+    // seed with one empty set (lbs/reps blank)
     template.exercises.push({
-      name: exerciseName,
-      sets: []
-    });
-    
-    // Save updated user data to localStorage
+        name:  exerciseName,
+        sets: [ { weight: "", reps: "" } ]
+        });
+
     localStorage.setItem(username, JSON.stringify(userData));
-    
-    // Optionally, update the UI to reflect the new exercise.
-    // Make sure renderExercises() is defined to update the display.
+    closePopup();
     renderExercises();
-  }
-  function renderExercises() {
-    const container = document.getElementById("exercise-container");
-    container.innerHTML = ""; // Clear previous content
-    
-    // Retrieve the current template name and user data
+}
+
+function renderExercises() {
+    const container   = document.getElementById("exercise-container");
+    container.innerHTML = "";
+  
+    const username     = localStorage.getItem("currentUser");
     const templateName = document.getElementById("template-name").value.trim();
-    const username = localStorage.getItem("currentUser");
-    let userData = JSON.parse(localStorage.getItem(username)) || { templates: [] };
-    let template = userData.templates.find(t => t.name === templateName);
-    
-    if (template && template.exercises) {
-      template.exercises.forEach(exercise => {
-        // Create a div for each exercise
-        let exerciseDiv = document.createElement("div");
-        exerciseDiv.classList.add("exercise-box");
-        
-        // Check if exercise is an object and use its name, otherwise use it directly
-        exerciseDiv.textContent = typeof exercise === "object" ? exercise.name : exercise;
-        
-        container.appendChild(exerciseDiv);
+    if (!username || !templateName) return;
+  
+    const userData = JSON.parse(localStorage.getItem(username)) || { templates: [] };
+    const template = userData.templates.find(t => t.name === templateName);
+    if (!template || !template.exercises) return;
+  
+    template.exercises.forEach(exerciseObj => {
+      const box = document.createElement("div");
+      box.classList.add("exercise-box");
+  
+      // title
+      const h3 = document.createElement("h3");
+      h3.textContent = exerciseObj.name;
+      box.appendChild(h3);
+  
+      // build table
+      const table = document.createElement("table");
+      table.classList.add("sets-table");
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Set</th><th>+lbs</th><th>Reps</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      `;
+      const tbody = table.querySelector("tbody");
+  
+      // one row per set in the data model
+      exerciseObj.sets.forEach((setObj, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${i+1}</td>
+          <td><input type="number" class="lbs-input"  value="${setObj.weight}" placeholder="lbs"/></td>
+          <td><input type="number" class="reps-input" value="${setObj.reps}"  placeholder="reps"/></td>
+        `;
+        // update model on change
+        row.querySelector(".lbs-input")
+           .addEventListener("change", e => {
+             setObj.weight = e.target.value;
+             localStorage.setItem(username, JSON.stringify(userData));
+           });
+        row.querySelector(".reps-input")
+           .addEventListener("change", e => {
+             setObj.reps = e.target.value;
+             localStorage.setItem(username, JSON.stringify(userData));
+           });
+        tbody.appendChild(row);
       });
-    }
+  
+      // + Add Set button
+      const addBtn = document.createElement("button");
+      addBtn.classList.add("add-set-btn");
+      addBtn.textContent = "+ Add Set";
+      addBtn.addEventListener("click", () => {
+        exerciseObj.sets.push({ weight: "", reps: "" });
+        localStorage.setItem(username, JSON.stringify(userData));
+        renderExercises();
+      });
+  
+      box.appendChild(table);
+      box.appendChild(addBtn);
+      container.appendChild(box);
+    });
   }
   
-
+  
+  
 
 function saveTemplate() {
-    const templateNameInput = document.getElementById("template-name").value.trim();
-    if (!templateNameInput) {
+    const templateName = document
+        .getElementById("template-name")
+        .value.trim();
+    if (!templateName) {
         alert("Please enter a template name.");
         return;
     }
-
-    // Gather all the exercises added to the template
-    const exercisesElements = document.querySelectorAll('.exercise-box');
-    // Save exercises as objects with name and empty sets array for compatibility
-    const selectedExercises = Array.from(exercisesElements).map(box => ({
-        name: box.textContent,
-        sets: []
-    }));
 
     const username = localStorage.getItem("currentUser");
     if (!username) {
@@ -145,24 +171,47 @@ function saveTemplate() {
         return;
     }
 
-    // Retrieve user data from localStorage
-    let userData = JSON.parse(localStorage.getItem(username)) || { templates: [] };
+    // Build an array of { name, sets: [ {weight, reps}, ... ] }
+    const exercisesData = Array.from(
+        document.querySelectorAll(".exercise-box")
+    ).map(box => {
+      // exercise name from the <h3>
+        const name = box.querySelector("h3").textContent.trim();
 
-    // Check if the template already exists (for editing)
-    let existingTemplate = userData.templates.find(t => t.name === templateNameInput);
-    if (existingTemplate) {
-        existingTemplate.exercises = selectedExercises;
+      // each row in the table → one set
+        const sets = Array.from(
+        box.querySelectorAll(".sets-table tbody tr")
+    ).map(row => {
+        const weight = row.querySelector(".lbs-input").value.trim();
+        const reps   = row.querySelector(".reps-input").value.trim();
+        return { weight, reps };
+        });
+  
+        return { name, sets };
+    });
+  
+    // load or init user data
+    const userData = JSON.parse(localStorage.getItem(username)) || {
+        templates: [],
+    };
+  
+    // find existing or push new
+    let tpl = userData.templates.find(t => t.name === templateName);
+    if (tpl) {
+        tpl.exercises = exercisesData;
     } else {
-        // Create a new template entry
-        userData.templates.push({ name: templateNameInput, exercises: selectedExercises });
+        userData.templates.push({
+        name: templateName,
+        exercises: exercisesData,
+        });
     }
-
-    // Save the updated user data back to localStorage
+  
+    // persist & go home
     localStorage.setItem(username, JSON.stringify(userData));
-
-    // Redirect to the homepage
-    window.location.href = 'index.html';
-}
+    window.location.href = "index.html";
+  }
+  
+  
 
 // Attach functions to global scope so inline event handlers can access them
 window.goBack = goBack;
