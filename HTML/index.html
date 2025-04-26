@@ -30,18 +30,25 @@
     <script src="../JS/script.js"></script>
 
     <script>
-        function logout() {
-          // Retrieve the current username from localStorage
-          const username = localStorage.getItem("currentUser");
-          if (username) {
-            // Remove user-specific data (templates, etc.)
+      function logout() {
+        const username = localStorage.getItem("currentUser");
+        if (username) {
+          const userData = JSON.parse(localStorage.getItem(username)) || { templates: [] };
+          fetch("/templates", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, templates: userData.templates })
+          })
+          .finally(() => {
+            // now clear and redirect
             localStorage.removeItem(username);
-          }
-          // Remove the currentUser key to log out
-          localStorage.removeItem("currentUser");
-          // Redirect to the login page
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+          });
+        } else {
           window.location.href = "login.html";
         }
+      }
       </script>
       
 </body>
