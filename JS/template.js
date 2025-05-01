@@ -30,34 +30,39 @@ function closePopup() {
 }
 
 function populateExerciseList() {
-    const exerciseList = document.getElementById('exercise-list');
-    exerciseList.innerHTML = "";
+  const exerciseList = document.getElementById('exercise-list');
+  exerciseList.innerHTML = "";
 
-    exercises.forEach(exercise => {
-        const item = document.createElement('div');
-        item.classList.add('exercise-item');
-        item.textContent = `${exercise.name} (${exercise.category})`;
+  exercises.forEach(exercise => {
+    const item = document.createElement('div');
+    item.classList.add('exercise-item');
 
-        // When an exercise is clicked, add it to the template and close the popup
-        item.addEventListener('click', () => {
-            addExerciseToTemplate(exercise.name);
-            closePopup();
-        });
+    // only show name…
+    item.textContent = exercise.name;
+    // …but remember category for filtering
+    item.dataset.category = exercise.category.toLowerCase();
 
-        exerciseList.appendChild(item);
+    item.addEventListener('click', () => {
+      addExerciseToTemplate(exercise.name);
+      closePopup();
     });
+
+    exerciseList.appendChild(item);
+  });
 }
+
 
 function filterExercises() {
-    const query = document.getElementById('search-exercise').value.toLowerCase();
-    const items = document.querySelectorAll('.exercise-item');
+  const query = document.getElementById('search-exercise').value.toLowerCase();
+  const items = document.querySelectorAll('.exercise-item');
 
-    items.forEach(item => {
-        item.style.display = item.textContent.toLowerCase().includes(query)
-            ? 'block'
-            : 'none';
-    });
+  items.forEach(item => {
+    const nameMatch     = item.textContent.toLowerCase().includes(query);
+    const categoryMatch = item.dataset.category.includes(query);
+    item.style.display = (nameMatch || categoryMatch) ? 'block' : 'none';
+  });
 }
+
 
 function addExerciseToTemplate(exerciseName) {
     const username = localStorage.getItem("currentUser");
