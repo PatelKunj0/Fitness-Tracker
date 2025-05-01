@@ -93,14 +93,33 @@ function renderExercises() {
     const template = userData.templates.find(t => t.name === templateName);
     if (!template || !template.exercises) return;
   
-    template.exercises.forEach(exerciseObj => {
+    template.exercises.forEach((exerciseObj, exerciseIndex) => {
       const box = document.createElement("div");
       box.classList.add("exercise-box");
   
-      // title
+      // header: exercise name + delete button
+      const headerDiv = document.createElement("div");
+      headerDiv.classList.add("exercise-header");
+
+      // name
       const h3 = document.createElement("h3");
       h3.textContent = exerciseObj.name;
-      box.appendChild(h3);
+      headerDiv.appendChild(h3);
+
+      // delete button
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.classList.add("delete-exercise-btn");
+      deleteBtn.addEventListener("click", () => {
+        // remove this exercise from the template
+        template.exercises.splice(exerciseIndex, 1);
+        localStorage.setItem(username, JSON.stringify(userData));
+        renderExercises();
+      });
+      headerDiv.appendChild(deleteBtn);
+
+      box.appendChild(headerDiv);
+
   
       // build table
       const table = document.createElement("table");

@@ -178,29 +178,93 @@ function startWorkout() {
   currentTemplate.lastPerformed = new Date().toISOString();
   saveTemplate();
   workoutActive = true;
+
+  // hide the edit button
   const editBtn = document.querySelector(".edit-btn");
   if (editBtn) editBtn.style.visibility = "hidden";
+
+  // start the timer
   startTimer();
   alert("Workout started! You can now mark your sets.");
-  // Hide that button and show cancel
+
+  // remove the Start button
   const startBtn = document.querySelector('.start-workout-btn');
   if (startBtn) startBtn.style.display = "none";
+
+  // create Cancel button
   const cancelBtn = document.createElement('button');
   cancelBtn.classList.add('cancel-workout-btn');
   cancelBtn.textContent = "Cancel Workout";
   cancelBtn.style.cssText = 'background:#f44336;color:#fff;border:none;padding:10px 20px;border-radius:20px;cursor:pointer;font-weight:bold;margin-top:20px;';
   cancelBtn.onclick = cancelWorkout;
-  document.querySelector('.container').append(cancelBtn);
+
+  // create Finish button
+  const finishBtn = document.createElement('button');
+  finishBtn.classList.add('finish-workout-btn');
+  finishBtn.textContent = "Finish Workout";
+  finishBtn.style.cssText = 'background:#4caf50;color:#fff;border:none;padding:10px 20px;border-radius:20px;cursor:pointer;font-weight:bold;margin-top:20px;margin-left:10px;';
+  finishBtn.onclick = finishWorkout;
+
+  document.querySelector('.container').append(cancelBtn, finishBtn);
 }
+
+function finishWorkout() {
+  if (!workoutActive) return;
+  workoutActive = false;
+  clearInterval(timerInterval);
+
+  // hide timer
+  const timerEl = document.getElementById("timer");
+  if (timerEl) timerEl.style.display = "none";
+
+  // reset all completed flags
+  currentTemplate.exercises.forEach(ex =>
+    ex.sets?.forEach(set => { set.completed = false; })
+  );
+  saveTemplate();
+
+  // remove the Cancel & Finish buttons
+  document.querySelectorAll('.cancel-workout-btn, .finish-workout-btn')
+          .forEach(btn => btn.remove());
+
+  // show stats panel
+  const statsDiv = document.getElementById("exercise-stats");
+  if (statsDiv) statsDiv.style.display = "block";
+
+  // re-render exercises (this also updates the checkmarks) + stats
+  renderExercises();
+
+  alert("Workout finished! Here are your stats.");
+}
+
+
 
 function cancelWorkout() {
   if (!confirm("Are you sure you want to cancel the workout?")) return;
+
+  // Stop workout logic and timer
   workoutActive = false;
   clearInterval(timerInterval);
-  const timerEl = document.getElementById("timer");
-  if (timerEl) timerEl.style.display = "none";
+
+  // Hide the timer display
+  const timerElement = document.getElementById("timer");
+  if (timerElement) timerElement.style.display = "none";
+
+  // Reset all completed flags
+  currentTemplate.exercises.forEach(exercise => {
+    exercise.sets?.forEach(set => {
+      set.completed = false;
+    });
+  });
+
+  // Save the reset state and re-render (optional if you redirect immediately)
+  saveTemplate();
+  renderExercises();
+
+  // Redirecting back to the homepage
   window.location.href = "index.html";
 }
+
 
 function stopTimer() {
   clearInterval(timerInterval);

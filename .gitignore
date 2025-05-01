@@ -1,7 +1,5 @@
 .history
-.jj
-.env
-.o
-.ob
-.exe
-node_modules/
+.vscode
+templates.csv
+users.csv
+users.csv

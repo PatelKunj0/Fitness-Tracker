@@ -140,3 +140,8 @@
   color: #333;
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+
+/* hide stats until workout is finished */
+#exercise-stats {
+  display: none;
+}

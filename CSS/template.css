@@ -66,6 +66,7 @@
     background-color: #f4f4f4;
 }
 
+
 /* center all cells & inputs in the sets-table */
 .sets-table {
     width: 100%;
@@ -86,5 +87,25 @@
     text-align: center;  
     box-sizing: border-box;
   }
+
+/* Header (name + delete) */
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
   
+  /* Delete-exercise button */
+  .delete-exercise-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+  .delete-exercise-btn:hover {
+    background-color: #e53935;
+  }
   

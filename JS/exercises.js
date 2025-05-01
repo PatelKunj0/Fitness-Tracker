@@ -21,12 +21,15 @@ const exercises = [
   
     // Chest
     { name: "Incline Chest Press (Machine)", category: "Chest" },
-    { name: "Incline Bench Press (Dumbbell)", category: "Chest" },
-    { name: "Push-Up", category: "Chest" },
-    { name: "Chest Fly (Dumbbell)", category: "Chest" },
-    { name: "Flat Bench Press (Barbell)", category: "Chest" },
-    { name: "Decline Bench Press (Barbell)", category: "Chest" },
+    { name: "Dumbbell Incline Bench Press", category: "Chest" },
+    { name: "Dumbbell Bench Press", category: "Chest" },
+    { name: "Incline Bench Press", category: "Chest" },
+    { name: "Decline Bench Press", category: "Chest" },
+    { name: "Dumbbell Chest Fly", category: "Chest" },
+    { name: "Flat Bench Press", category: "Chest" },
     { name: "Pec Deck Machine", category: "Chest" },
+    { name: "Bench Press", category: "Chest" },
+    { name: "Push-Up", category: "Chest" },
   
     // Legs
     { name: "Squat (Barbell)", category: "Legs" },
