@@ -7,22 +7,22 @@ body {
 }
 
 body.welcome-page {
-    background-image: url('../images/Background.webp');
-    background-size: cover;
-    background-position: center;
+    background-image: url('/images/BackG2.png');
+    background-size: 100% auto;
+    background-position: center 32%;
     background-repeat: no-repeat;
 }
 
 .container {
-    width: 100%; /* Use percentage-based width */
-    max-width: 600px; /* Limit maximum width */
+    width: 100%; 
+    max-width: 600px; 
     margin: 20px auto;
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    overflow-x: hidden; /* Prevent horizontal overflow */
+    overflow-x: hidden;
 }
 
 

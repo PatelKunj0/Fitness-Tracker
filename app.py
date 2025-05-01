@@ -77,6 +77,9 @@ def css(fn):
 def js(fn):
     return send_from_directory("JS", fn)
 
+@app.route("/images/<path:filename>")
+def serve_images(filename):
+    return send_from_directory("images", filename)
 
 @app.route("/", defaults={"path":""})
 @app.route("/<path:path>")
